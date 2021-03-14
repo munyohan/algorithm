@@ -1,7 +1,7 @@
 "use strict";
 
 function solution(bridge_length, weight, truck_weights) {
-      class Truck {
+  class Truck {
     constructor(weight) {
       this.weight = weight;
       this.timer = 1;
@@ -26,7 +26,7 @@ function solution(bridge_length, weight, truck_weights) {
     let weightOfTrucksOnBridge = 0;
 
     // 다리를 건너는 트럭 한 칸씩 전진
-    for(let i =0; i< trucksOnBridge.length; i++) {
+    for (let i = 0; i < trucksOnBridge.length; i++) {
       if (trucksOnBridge[i].move()) {
         trucksOnBridge.shift();
         i--;
@@ -41,7 +41,6 @@ function solution(bridge_length, weight, truck_weights) {
     if (weightOfTrucksOnBridge + truck_weights[0] <= weight) {
       trucksOnBridge.push(new Truck(truck_weights.shift()));
     }
-
 
     // 여기까지 1초
     totalSec++;
