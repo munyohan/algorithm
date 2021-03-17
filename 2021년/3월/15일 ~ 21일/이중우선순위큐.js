@@ -1,32 +1,6 @@
 "use strict";
 
 function solution(operations) {
-  let answer = [];
-  const minHeap = new MinHeap();
-
-  for (const operation of operations) {
-    const [command, data] = operation.split(" ");
-
-    switch (command) {
-      case "I":
-        minHeap.push(data);
-        break;
-
-      case "D":
-        if (data === "-1") {
-          minHeap.pop();
-        } else if (data === "1") {
-          let trash = 0;
-        } else {
-          throw Error("Wrong operation !");
-        }
-        break;
-
-      default:
-        throw Error("Wrong operation !");
-    }
-  }
-
   class MinHeap {
     constructor() {
       this.arr = [];
@@ -37,7 +11,8 @@ function solution(operations) {
       if (this.lastIndex === 0) throw Error("Heap is empty !");
 
       const minValue = this.arr[1];
-      this.arr[1] = this.arr[lastIndex--];
+      this.arr[1] = this.arr[this.lastIndex];
+      this.arr[this.lastIndex--] = 0;
 
       let curIndex = 1;
       while (curIndex <= this.lastIndex) {
@@ -83,15 +58,43 @@ function solution(operations) {
     }
 
     print() {
-      const result = "";
+      let result = "";
 
       this.arr.forEach((num) => {
-        result += num;
+        result += num + " ";
       });
 
       console.log(result);
     }
   }
+
+  let answer = [];
+  const minHeap = new MinHeap();
+
+  for (const operation of operations) {
+    const [command, data] = operation.split(" ");
+
+    switch (command) {
+      case "I":
+        minHeap.push(data);
+        break;
+
+      case "D":
+        if (data === "-1") {
+          minHeap.pop();
+        } else if (data === "1") {
+          let trash = 0;
+        } else {
+          throw Error("Wrong operation !");
+        }
+        break;
+
+      default:
+        throw Error("Wrong operation !");
+    }
+  }
+
+  minHeap.print();
 
   return answer;
 }
