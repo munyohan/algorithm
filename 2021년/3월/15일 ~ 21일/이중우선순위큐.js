@@ -8,11 +8,10 @@ function solution(operations) {
     }
 
     pop() {
-      if (this.lastIndex === 0) return null;
+      if (this.lastIndex === 0) return 0;
 
-      const minValue = this.arr[1];
       this.arr[1] = this.arr[this.lastIndex];
-      this.arr[this.lastIndex--] = null;
+      this.arr[this.lastIndex--] = 0;
 
       let curIndex = 1;
       while (curIndex <= this.lastIndex) {
@@ -33,7 +32,7 @@ function solution(operations) {
         curIndex = targetIndex;
       }
 
-      return minValue;
+      return [...this.arr];
     }
 
     push(num) {
@@ -76,11 +75,10 @@ function solution(operations) {
     }
 
     pop() {
-      if (this.lastIndex === 0) return null;
+      if (this.lastIndex === 0) return 0;
 
-      const maxValue = this.arr[1];
       this.arr[1] = this.arr[this.lastIndex];
-      this.arr[this.lastIndex--] = null;
+      this.arr[this.lastIndex--] = 0;
 
       let curIndex = 1;
       while (curIndex <= this.lastIndex) {
@@ -101,7 +99,7 @@ function solution(operations) {
         curIndex = targetIndex;
       }
 
-      return maxValue;
+      return [...this.arr];
     }
 
     push(num) {
@@ -152,9 +150,21 @@ function solution(operations) {
 
       case "D":
         if (data === "-1") {
-          minHeap.pop();
+          const newArr = minHeap.pop();
+          console.log(newArr);
+          maxHeap.arr = [];
+
+          newArr.forEach((num) => {
+            maxHeap.push(Number(num));
+          });
         } else if (data === "1") {
-          maxHeap.pop();
+          const newArr = maxHeap.pop();
+          console.log(newArr);
+          minHeap.arr = [];
+
+          newArr.forEach((num) => {
+            minHeap.push(Number(num));
+          });
         } else {
           throw Error("Wrong operation !");
         }
@@ -166,10 +176,11 @@ function solution(operations) {
   }
 
   minHeap.print();
+  maxHeap.print();
 
   answer = [maxHeap.peek(), minHeap.peek()];
 
   return answer;
 }
 
-console.log(solution(["I 16", "D 1"]));
+console.log(solution(["I 7", "I 5", "I -5", "I 12", "I 56", "I -324"]));
