@@ -10,20 +10,27 @@ function solution(operations) {
     pop() {
       if (this.lastIndex === 0) return 0;
 
-      this.arr[1] = this.arr[this.lastIndex];
-      this.arr[this.lastIndex--] = 0;
+      this.arr[1] = this.arr[this.lastIndex--];
 
       let curIndex = 1;
       while (curIndex <= this.lastIndex) {
         let leftChildIndex = curIndex * 2;
         let rightChildIndex = curIndex * 2 + 1;
 
-        let targetIndex = 0;
-        if (this.arr[leftChildIndex] < this.arr[rightChildIndex])
+        let targetIndex = curIndex;
+        if (
+          leftChildIndex <= this.lastIndex &&
+          this.arr[leftChildIndex] < this.arr[curIndex]
+        )
           targetIndex = leftChildIndex;
-        else targetIndex = rightChildIndex;
 
-        if (this.arr[curIndex] <= this.arr[targetIndex]) break;
+        if (
+          rightChildIndex <= this.lastIndex &&
+          this.arr[rightChildIndex] < this.arr[leftChildIndex]
+        )
+          targetIndex = rightChildIndex;
+
+        if (curIndex === targetIndex) break;
 
         let temp = this.arr[curIndex];
         this.arr[curIndex] = this.arr[targetIndex];
@@ -32,7 +39,13 @@ function solution(operations) {
         curIndex = targetIndex;
       }
 
-      return [...this.arr];
+      const result = [];
+
+      for (let i = 1; i <= this.lastIndex; i++) {
+        result.push(this.arr[i]);
+      }
+
+      return result;
     }
 
     push(num) {
@@ -60,9 +73,8 @@ function solution(operations) {
     print() {
       let result = "";
 
-      this.arr.forEach((num) => {
-        result += num + " ";
-      });
+      for (let i = 1; i <= this.lastIndex; i++)
+        result += ` ${i}: ${this.arr[i]} |`;
 
       console.log(result);
     }
@@ -77,20 +89,27 @@ function solution(operations) {
     pop() {
       if (this.lastIndex === 0) return 0;
 
-      this.arr[1] = this.arr[this.lastIndex];
-      this.arr[this.lastIndex--] = 0;
+      this.arr[1] = this.arr[this.lastIndex--];
 
       let curIndex = 1;
       while (curIndex <= this.lastIndex) {
         let leftChildIndex = curIndex * 2;
         let rightChildIndex = curIndex * 2 + 1;
 
-        let targetIndex = 0;
-        if (this.arr[leftChildIndex] > this.arr[rightChildIndex])
+        let targetIndex = curIndex;
+        if (
+          leftChildIndex <= this.lastIndex &&
+          this.arr[leftChildIndex] > this.arr[curIndex]
+        )
           targetIndex = leftChildIndex;
-        else targetIndex = rightChildIndex;
 
-        if (this.arr[curIndex] >= this.arr[targetIndex]) break;
+        if (
+          rightChildIndex <= this.lastIndex &&
+          this.arr[rightChildIndex] > this.arr[leftChildIndex]
+        )
+          targetIndex = rightChildIndex;
+
+        if (curIndex === targetIndex) break;
 
         let temp = this.arr[curIndex];
         this.arr[curIndex] = this.arr[targetIndex];
@@ -99,7 +118,13 @@ function solution(operations) {
         curIndex = targetIndex;
       }
 
-      return [...this.arr];
+      const result = [];
+
+      for (let i = 1; i <= this.lastIndex; i++) {
+        result.push(this.arr[i]);
+      }
+
+      return result;
     }
 
     push(num) {
@@ -127,32 +152,31 @@ function solution(operations) {
     print() {
       let result = "";
 
-      this.arr.forEach((num) => {
-        result += num + " ";
-      });
+      for (let i = 1; i <= this.lastIndex; i++)
+        result += ` ${i}: ${this.arr[i]} |`;
 
       console.log(result);
     }
   }
 
   let answer = [];
-  const minHeap = new MinHeap();
-  const maxHeap = new MaxHeap();
+  let minHeap = new MinHeap();
+  let maxHeap = new MaxHeap();
 
   for (const operation of operations) {
     const [command, data] = operation.split(" ");
 
     switch (command) {
       case "I":
-        minHeap.push(data);
-        maxHeap.push(data);
+        minHeap.push(Number(data));
+        maxHeap.push(Number(data));
         break;
 
       case "D":
         if (data === "-1") {
           const newArr = minHeap.pop();
-          console.log(newArr);
-          maxHeap.arr = [];
+          maxHeap = new MaxHeap();
+          if (newArr === 0) break;
 
           newArr.forEach((num) => {
             maxHeap.push(Number(num));
@@ -160,7 +184,9 @@ function solution(operations) {
         } else if (data === "1") {
           const newArr = maxHeap.pop();
           console.log(newArr);
-          minHeap.arr = [];
+          minHeap = new MinHeap();
+
+          if (newArr === 0) break;
 
           newArr.forEach((num) => {
             minHeap.push(Number(num));
@@ -183,4 +209,19 @@ function solution(operations) {
   return answer;
 }
 
-console.log(solution(["I 7", "I 5", "I -5", "I 12", "I 56", "I -324"]));
+console.log(
+  solution(["I 0", "I -5643", "I 123", "I 123", "I 0", "I 24", "D 1"])
+);
+// console.log(
+//   solution([
+//     "I -45",
+//     "I 653",
+//     "D 1",
+//     "I -642",
+//     "I 45",
+//     "I 97",
+//     "D 1",
+//     "D -1",
+//     "I 333",
+//   ])
+// );
