@@ -1,27 +1,20 @@
 'use strict';
 
 function solution(number, k) {
-  number = number.split('');
-  let answer = '';
+  let answer = number.split('');
 
   Loop: while (k !== 0) {
-    for (let i = 0; i < number.length - 1; i++) {
-      if (number[i] < number[i + 1]) {
-        number[i] = '*';
+    for (let i = 1; i < answer.length; i++) {
+      if (answer[i - 1] < answer[i]) {
+        answer.splice(i - 1, 1);
         k--;
         if (k === 0) break Loop;
         else continue Loop;
       }
     }
-
-    if (k === 0) number[number.length - 1] = '*';
   }
 
-  for (let i = 0; i < number.length; i++) {
-    if (number[i] !== '*') answer += number[i];
-  }
-
-  return answer;
+  return answer.join('');
 }
 
 console.log(solution('4177252841', 4));
