@@ -13,8 +13,9 @@ function solution(begin, target, words) {
       if (answer > cnt) answer = cnt;
       return;
     }
+    ㅈ;
 
-    // test if newWord can be changed to one of words except visited ones
+    // test if newWord can be changed to one of the word in words variable except visited ones
     for (let i = 0; i < words.length; i++) {
       if (visitedIndex.includes(i)) continue;
 
