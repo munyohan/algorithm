@@ -8,12 +8,14 @@
 */
 function solution(n, edge) {
   let answer = 0;
-  const queue = [[1, 0]];
-  const adjList = new Array(n + 1);
+  const queue = [[1, 0]]; // 맨 처음 시작은 1번에서 한다. 각 요소의 첫 번째 원소는 노드의 번호, 두 번째는 거리이다.
+  const adjList = new Array(n + 1); // 인접리스트 선언
   for (let i = 1; i <= n; i++) {
     adjList[i] = new Array();
   }
+  // 각 노드까지의 거리를 저장할 배열 선언
   const distances = new Array(n + 1).fill(Number.MAX_SAFE_INTEGER);
+  // 0번과 1번은 0으로 설정. 0은 안쓰기 때문이고 1은 출발점이기 때문이다.
   distances[0] = 0;
   distances[1] = 0;
 
@@ -33,8 +35,6 @@ function solution(n, edge) {
       }
     });
   }
-
-  console.log(distances);
 
   let max = 0;
   distances.forEach(item => {
