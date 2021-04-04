@@ -8,58 +8,55 @@
 */
 function solution(n, edge) {
   let answer = 0;
-  const minDistances = new Array(n + 1).fill(20000);
-
+  const queue = [[1, 0]];
+  const adjList = new Array(n + 1);
   for (let i = 1; i <= n; i++) {
-    calculate(1, i, [1], 0);
+    adjList[i] = new Array();
+  }
+  const distances = new Array(n + 1).fill(Number.MAX_SAFE_INTEGER);
+  distances[0] = 0;
+  distances[1] = 0;
+
+  // 인접 리스트 생성
+  edge.forEach(item => {
+    if (!adjList[item[0]].includes(item[1])) adjList[item[0]].push(item[1]);
+    if (!adjList[item[1]].includes(item[0])) adjList[item[1]].push(item[0]);
+  });
+
+  while (queue.length !== 0) {
+    const curPos = queue.shift();
+
+    adjList[curPos[0]].forEach(item => {
+      if (distances[item] > curPos[1] + 1) {
+        distances[item] = curPos[1] + 1;
+        queue.push([item, curPos[1] + 1]);
+      }
+    });
   }
 
-  console.log(minDistances);
+  console.log(distances);
 
   let max = 0;
-  for (let i = 1; i < minDistances.length; i++) {
-    if (max < minDistances[i]) {
-      max = minDistances[i];
+  distances.forEach(item => {
+    if (max < item) {
+      max = item;
       answer = 1;
-    } else {
+    } else if (max === item) {
       answer++;
     }
-  }
+  });
 
   return answer;
-
-  function calculate(start, dest, visited, distance) {
-    if (minDistances[dest] < distance) return;
-
-    if (start === dest && minDistances[dest] > distance) {
-      minDistances[dest] = distance;
-
-      return;
-    }
-
-    for (let i = 0; i < edge.length; i++) {
-      if (edge[i][0] === start && !visited.includes(edge[i][1])) {
-        calculate(edge[i][1], dest, [...visited, edge[i][1]], distance + 1);
-      } else if (edge[i][1] === start && !visited.includes(edge[i][0])) {
-        calculate(edge[i][0], dest, [...visited, edge[i][0]], distance + 1);
-      }
-    }
-  }
 }
 
 console.log(
-  solution(11, [
-    [1, 2],
-    [1, 3],
-    [2, 4],
-    [2, 5],
-    [3, 5],
+  solution(6, [
     [3, 6],
-    [4, 8],
-    [4, 9],
-    [5, 9],
-    [5, 10],
-    [6, 10],
-    [6, 11],
+    [4, 3],
+    [3, 2],
+    [1, 3],
+    [1, 2],
+    [2, 4],
+    [5, 2],
   ])
 );
